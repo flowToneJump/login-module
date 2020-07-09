@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6e059395990b2f7664a278cbea89302558847b9bbb10629cc167dba7bf24f720
+-- hash: bc033b1445842deec89c992b7cf07b0ad98ee731aa44de6712000715fd7b8870
 
 name:           Login
 version:        0.1.0.0
@@ -34,6 +34,10 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , cryptonite
+    , string-conv
+    , text
   default-language: Haskell2010
 
 test-suite Login-test
@@ -47,4 +51,9 @@ test-suite Login-test
   build-depends:
       Login
     , base >=4.7 && <5
+    , bytestring
+    , cryptonite
+    , hspec
+    , string-conv
+    , text
   default-language: Haskell2010

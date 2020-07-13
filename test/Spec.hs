@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+import Crypto
 import Data.Either (isLeft)
 import Data.Text (Text)
-import Lib
 import Test.Hspec
 
 main :: IO ()
@@ -12,6 +12,12 @@ main = hspec $ do
       let pass = "HelloThere"
       result <- saltedHash pass
       result `shouldNotBe` pass
+
+    it "Salts passwords" $ do
+      let pass = "HelloThere"
+      first <- saltedHash pass
+      second <- saltedHash pass
+      first `shouldNotBe` second
 
   describe "Lib.hashValidation" $ do
     it "Accepts associated hash" $ do

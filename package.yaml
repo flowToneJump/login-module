@@ -24,7 +24,17 @@ dependencies:
 - cryptonite
 - string-conv
 - bytestring
+- servant
+- servant-server
+- mtl
+- bytestring
+- word8
+- wai
+- http-types
+- base64-bytestring
+- cookie
 - text
+- aeson
 
 library:
   source-dirs: src

@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeApplications #-}
 
-module Crypto
+module Web.Crypto
   ( saltedHash,
     hashValidation,
     ValidationErrorType (..),
@@ -8,7 +8,6 @@ module Crypto
   )
 where
 
-import Control.Monad.IO.Class
 import qualified Crypto.KDF.BCrypt as BCrypt
 import Data.Bifunctor (first)
 import Data.ByteString (ByteString)

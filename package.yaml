@@ -20,21 +20,22 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/Login#readme>
 
 dependencies:
+- aeson
 - base >= 4.7 && < 5
-- cryptonite
-- string-conv
+- base64-bytestring
 - bytestring
+- bytestring
+- cookie
+- cryptonite
+- http-types
+- mtl
 - servant
 - servant-server
-- mtl
-- bytestring
-- word8
-- wai
-- http-types
-- base64-bytestring
-- cookie
+- servant-foreign
+- string-conv
 - text
-- aeson
+- wai
+- word8
 
 library:
   source-dirs: src

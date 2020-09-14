@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: bb76574916cd86e527d5672a6f1fb1d80e571e53a29873a4099fce25becb6fb4
+-- hash: 9b478993994448fbc03847e9b7a271b5c1dba64957f94b6a6dcb0441d74fc1e9
 
 name:           Login
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
   exposed-modules:
       Web.Auth
       Web.Crypto
+      Web.Crypto.JWT
       Web.Login
   other-modules:
       Paths_Login
@@ -42,7 +43,9 @@ library
     , cookie
     , cryptonite
     , http-types
+    , jwt
     , mtl
+    , pem
     , servant
     , servant-foreign
     , servant-server
@@ -70,7 +73,9 @@ test-suite Login-test
     , cryptonite
     , hspec
     , http-types
+    , jwt
     , mtl
+    , pem
     , servant
     , servant-foreign
     , servant-server

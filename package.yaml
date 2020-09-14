@@ -28,10 +28,11 @@ dependencies:
 - cookie
 - cryptonite
 - http-types
+- jwt
 - mtl
 - servant
-- servant-server
 - servant-foreign
+- servant-server
 - string-conv
 - text
 - wai

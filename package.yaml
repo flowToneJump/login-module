@@ -28,7 +28,8 @@ dependencies:
 - cookie
 - cryptonite
 - http-types
-- jwt
+- jose 
+- lens
 - mtl
 - req
 - servant
@@ -36,6 +37,7 @@ dependencies:
 - servant-server
 - string-conv
 - text
+- time
 - wai
 - word8
 

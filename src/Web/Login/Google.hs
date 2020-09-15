@@ -1,23 +1,34 @@
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeApplications #-}
 
 module Web.Login.Google (validateGoogleLoginToken, GoogleLoginToken (..)) where
 
-import Data.ByteString
-import Data.Text
+import Crypto.JOSE.JWS
+import Crypto.JWT
+import Data.Proxy
+import Data.Text (Text)
+import Data.Time.Clock
 import Network.HTTP.Req
 import Web.Crypto.JWT
 
-googlePem :: IO ByteString
-googlePem = runReq config $ do
-  responseBody <$> req GET url NoReqBody bsResponse mempty
+googleJwkSet :: IO JWKSet
+googleJwkSet = runReq config $ do
+  responseBody <$> req GET url NoReqBody (Proxy @(JsonResponse JWKSet)) mempty
   where
     config = defaultHttpConfig
-    url = https "www.googleapis.com" /: "oauth2" /: "v1" /: "certs"
+    url = https "www.googleapis.com" /: "oauth2" /: "v3" /: "certs"
 
 newtype GoogleLoginToken = GoogleLoginToken Text
 
-validateGoogleLoginToken :: GoogleLoginToken -> GoogleAuthInfo -> IO (Either JwtValidationError ())
+validateGoogleLoginToken :: GoogleLoginToken -> JwtAuthInfo -> IO (Either JWTError ClaimsSet)
 validateGoogleLoginToken (GoogleLoginToken jwt) authInfo = do
-  pem <- googlePem
-  pure $ () <$ verifyJwt (RawPem pem) (RawJwt jwt) authInfo
+  set <- googleJwkSet
+  verifyJwt set (RawJwt jwt) authInfo
+
+test = do
+  now <- getCurrentTime
+  print
+    =<< validateGoogleLoginToken
+      (GoogleLoginToken "abc.123.xyz")
+      (JwtAuthInfo "" (["accounts.google.com", "https://accounts.google.com"]))

@@ -1,43 +1,29 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Web.Crypto.JWT where
 
-import Control.Monad
-import Data.ByteString (ByteString)
-import Data.Text
-import Web.JWT
-import qualified Web.JWT as JWT
-
-data JwtValidationError
-  = PemParsingError
-  | TooManyPem
-  | NoPemParsed
-  | CouldNotParseJwt
-  | InvalidJwt
-  | InvalidAud
-  | InvalidIss
-  | Expired
-
-newtype RawPem = RawPem ByteString
+import Control.Lens
+import Control.Monad.Except
+import Crypto.JOSE.Compact
+import Crypto.JOSE.JWK
+import Crypto.JWT
+import Data.String.Conv
+import Data.Text (Text)
 
 newtype RawJwt = RawJwt Text
 
-data GoogleAuthInfo = GoogleAuthInfo
+data JwtAuthInfo = JwtAuthInfo
   { appClientId :: StringOrURI,
-    validIssOpts :: [StringOrURI],
-    currTime :: NumericDate
+    validIssOpts :: [StringOrURI]
   }
 
-verifyJwt :: RawPem -> RawJwt -> GoogleAuthInfo -> Either JwtValidationError (JWT VerifiedJWT)
-verifyJwt (RawPem rawPem) (RawJwt rawJwt) authInfo = do
-  pem <- maybe (Left PemParsingError) pure $ readRsaSecret rawPem
-  unverifiedJwt <- maybe (Left CouldNotParseJwt) pure $ decode rawJwt
-  jwt <- maybe (Left InvalidJwt) pure $ verify (RSAPrivateKey pem) unverifiedJwt
-  unless (validAud jwt) $ Left InvalidAud
-  unless (validIss jwt) $ Left InvalidIss
-  unless (not $ expired jwt) $ Left InvalidIss
-  pure jwt
+verifyJwt :: JWKSet -> RawJwt -> JwtAuthInfo -> IO (Either JWTError ClaimsSet)
+verifyJwt jwkSet (RawJwt rawJwt) authInfo = runExceptT $ do
+  unverifiedJwt <- decodeCompact (toSL rawJwt)
+  verifyClaims config jwkSet unverifiedJwt
   where
-    validAud = maybe False (elem (appClientId authInfo) . either pure id) . aud . claims
-    validIss = maybe False (flip elem (validIssOpts authInfo)) . iss . claims
-    expired = maybe False (currTime authInfo <=) . JWT.exp . claims
+    config :: JWTValidationSettings
+    config =
+      defaultJWTValidationSettings (appClientId authInfo ==)
+        & jwtValidationSettingsIssuerPredicate .~ (flip elem (validIssOpts authInfo))

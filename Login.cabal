@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 966932387ff33989dda54a1295b50e7db695562bcbc1bc9677fbb5d4211c0ef5
+-- hash: ba6b96a3b84779d75851c62e5cef5ceeb77d5c04be8f4ace6bd3331b898328ae
 
 name:           Login
 version:        0.1.0.0
@@ -45,7 +45,8 @@ library
     , cookie
     , cryptonite
     , http-types
-    , jwt
+    , jose
+    , lens
     , mtl
     , req
     , servant
@@ -53,6 +54,7 @@ library
     , servant-server
     , string-conv
     , text
+    , time
     , wai
     , word8
   default-language: Haskell2010
@@ -75,7 +77,8 @@ test-suite Login-test
     , cryptonite
     , hspec
     , http-types
-    , jwt
+    , jose
+    , lens
     , mtl
     , req
     , servant
@@ -83,6 +86,7 @@ test-suite Login-test
     , servant-server
     , string-conv
     , text
+    , time
     , wai
     , word8
   default-language: Haskell2010

@@ -30,6 +30,7 @@ dependencies:
 - http-types
 - jwt
 - mtl
+- req
 - servant
 - servant-foreign
 - servant-server

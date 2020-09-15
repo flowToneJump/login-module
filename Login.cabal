@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9b478993994448fbc03847e9b7a271b5c1dba64957f94b6a6dcb0441d74fc1e9
+-- hash: 966932387ff33989dda54a1295b50e7db695562bcbc1bc9677fbb5d4211c0ef5
 
 name:           Login
 version:        0.1.0.0
@@ -31,6 +31,8 @@ library
       Web.Crypto
       Web.Crypto.JWT
       Web.Login
+      Web.Login.Google
+      Web.Login.Password
   other-modules:
       Paths_Login
   hs-source-dirs:
@@ -45,7 +47,7 @@ library
     , http-types
     , jwt
     , mtl
-    , pem
+    , req
     , servant
     , servant-foreign
     , servant-server
@@ -75,7 +77,7 @@ test-suite Login-test
     , http-types
     , jwt
     , mtl
-    , pem
+    , req
     , servant
     , servant-foreign
     , servant-server

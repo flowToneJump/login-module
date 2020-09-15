@@ -25,10 +25,3 @@ validateGoogleLoginToken :: GoogleLoginToken -> JwtAuthInfo -> IO (Either JWTErr
 validateGoogleLoginToken (GoogleLoginToken jwt) authInfo = do
   set <- googleJwkSet
   verifyJwt set (RawJwt jwt) authInfo
-
-test = do
-  now <- getCurrentTime
-  print
-    =<< validateGoogleLoginToken
-      (GoogleLoginToken "abc.123.xyz")
-      (JwtAuthInfo "" (["accounts.google.com", "https://accounts.google.com"]))

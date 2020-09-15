@@ -29,7 +29,7 @@ type PasswordManagementApi = ReqBody '[JSON] PasswordUpdate :> Post '[JSON] Bool
 -- | API with auth-protection
 type AuthApi private public =
   "private" :> AuthProtect "cookie-auth" :> (PasswordManagementApi :<|> private)
-    :<|> "public" :> public
+    :<|> public
 
 instance HasForeign lang ty (AuthProtect "cookie-auth") where
   type Foreign ty (AuthProtect "cookie-auth") = Session -> Req ty
